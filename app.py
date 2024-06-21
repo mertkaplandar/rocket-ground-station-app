@@ -29,11 +29,11 @@ class MainWindow(QMainWindow):
             self.config_json = json.loads(file.read())
 
             if self.config_json["theme"] == "White":
-                with open("style-white.qss", "r", encoding="utf-8") as style_file:
+                with open("styles/style-white.qss", "r", encoding="utf-8") as style_file:
                     style_sheet = style_file.read()
                     self.setStyleSheet(style_sheet)
             elif self.config_json["theme"] == "Dark":
-                with open("style-dark.qss", "r", encoding="utf-8") as style_file:
+                with open("styles/style-dark.qss", "r", encoding="utf-8") as style_file:
                     style_sheet = style_file.read()
                     self.setStyleSheet(style_sheet)
 
@@ -266,14 +266,14 @@ class MainWindow(QMainWindow):
 
     def change_app_theme(self):
         if self.change_app_theme_selector.currentIndex() == 0:
-            with open("style-white.qss", "r", encoding="utf-8") as style_file:
+            with open("styles/style-white.qss", "r", encoding="utf-8") as style_file:
                 style_sheet = style_file.read()
                 self.setStyleSheet(style_sheet)
             self.config_json["theme"] = "White"
             with open("config.json", "w", encoding="utf-8") as file:
                 json.dump(self.config_json, file, indent=4, ensure_ascii=False)
         elif self.change_app_theme_selector.currentIndex() == 1:
-            with open("style-dark.qss", "r", encoding="utf-8") as style_file:
+            with open("styles/style-dark.qss", "r", encoding="utf-8") as style_file:
                 style_sheet = style_file.read()
                 self.setStyleSheet(style_sheet)
             self.config_json["theme"] = "Dark"
