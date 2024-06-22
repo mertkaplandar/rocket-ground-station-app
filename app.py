@@ -16,6 +16,7 @@ import webbrowser
 import io
 import matplotlib.pyplot as plt
 from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
+from matplotlib.backends.backend_qt5agg import NavigationToolbar2QT as NavigationToolbar
 from datetime import datetime
 
 class MainWindow(QMainWindow):
@@ -180,10 +181,42 @@ class MainWindow(QMainWindow):
         self.graph_tab = QWidget()
         self.graph_layout = QVBoxLayout()
 
-        self.figure, (self.altitude_ax, self.pressure_ax, self.speed_ax) = plt.subplots(3, 1, figsize=(5, 10))
-        self.canvas = FigureCanvas(self.figure)
-        self.graph_layout.addWidget(self.canvas)
+        self.graph_tabs = QTabWidget()
 
+        # İrtifa Grafik Sekmesi
+        self.altitude_tab = QWidget()
+        self.altitude_layout = QVBoxLayout()
+        self.altitude_fig, self.altitude_ax = plt.subplots()
+        self.altitude_canvas = FigureCanvas(self.altitude_fig)
+        self.altitude_toolbar = NavigationToolbar(self.altitude_canvas, self)
+        self.altitude_layout.addWidget(self.altitude_toolbar)
+        self.altitude_layout.addWidget(self.altitude_canvas)
+        self.altitude_tab.setLayout(self.altitude_layout)
+        self.graph_tabs.addTab(self.altitude_tab, "İrtifa")
+
+        # Basınç Grafik Sekmesi
+        self.pressure_tab = QWidget()
+        self.pressure_layout = QVBoxLayout()
+        self.pressure_fig, self.pressure_ax = plt.subplots()
+        self.pressure_canvas = FigureCanvas(self.pressure_fig)
+        self.pressure_toolbar = NavigationToolbar(self.pressure_canvas, self)
+        self.pressure_layout.addWidget(self.pressure_toolbar)
+        self.pressure_layout.addWidget(self.pressure_canvas)
+        self.pressure_tab.setLayout(self.pressure_layout)
+        self.graph_tabs.addTab(self.pressure_tab, "Basınç")
+
+        # Hız Grafik Sekmesi
+        self.speed_tab = QWidget()
+        self.speed_layout = QVBoxLayout()
+        self.speed_fig, self.speed_ax = plt.subplots()
+        self.speed_canvas = FigureCanvas(self.speed_fig)
+        self.speed_toolbar = NavigationToolbar(self.speed_canvas, self)
+        self.speed_layout.addWidget(self.speed_toolbar)
+        self.speed_layout.addWidget(self.speed_canvas)
+        self.speed_tab.setLayout(self.speed_layout)
+        self.graph_tabs.addTab(self.speed_tab, "Hız")
+
+        self.graph_layout.addWidget(self.graph_tabs)
         self.graph_tab.setLayout(self.graph_layout)
         self.tabs.addTab(self.graph_tab, "Grafikler")
 
@@ -326,7 +359,7 @@ class MainWindow(QMainWindow):
                     if self.tabs.currentIndex() == 1:
                         self.update_data_display(data)
                     elif self.tabs.currentIndex() == 2:
-                        self.update_graphs()
+                        self.update_graphs(data)
                     elif self.tabs.currentIndex() == 3:
                         if self.map_checkbox.isChecked():
                             self.update_data_display(data)
@@ -391,7 +424,14 @@ class MainWindow(QMainWindow):
         url = f"https://www.google.com/maps?q={latitude},{longitude}"
         webbrowser.open(url, new=0)
 
-    def update_graphs(self):
+    def update_graphs(self, data):
+        time = datetime.now().strftime("%H:%M:%S")
+        self.time_data.append(time)
+
+        self.altitude_data.append(data['altitude'])
+        self.pressure_data.append(data['pressure'])
+        self.speed_data.append(data['speed'])
+
         self.altitude_ax.clear()
         self.pressure_ax.clear()
         self.speed_ax.clear()
@@ -409,7 +449,10 @@ class MainWindow(QMainWindow):
         self.speed_ax.set_ylabel("Hız (m/s)")
         self.speed_ax.set_xlabel("Zaman (s)")
 
-        self.canvas.draw()
+        self.altitude_canvas.draw()
+        self.pressure_canvas.draw()
+        self.speed_canvas.draw()
+
 
     def refresh_system_info(self):
         if self.serial_port:
