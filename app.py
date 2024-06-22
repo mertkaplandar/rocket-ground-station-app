@@ -76,7 +76,7 @@ class MainWindow(QMainWindow):
         }
 
         self.previous_map_data = {"latitude": None, "longitude": None}  # Önceki harita verilerini saklamak için değişken
-
+        self.data_log = []
         self.altitude_data = []
         self.pressure_data = []
         self.speed_data = []
@@ -233,7 +233,7 @@ class MainWindow(QMainWindow):
         self.disconnect_button.clicked.connect(self.disconnect_serial)
 
         self.save_data_button = QPushButton("Verileri Kaydet")
-        self.save_data_button.clicked.connect(self.save_data)
+        self.save_data_button.clicked.connect(self.save_as_data)
 
         self.change_app_theme_layout = QFormLayout()
         self.change_app_theme_selector = QComboBox()
@@ -322,6 +322,7 @@ class MainWindow(QMainWindow):
                 self.serial_data_text.append(line)
                 if line:
                     data = json.loads(line)
+                    self.save_data(data)
                     if self.tabs.currentIndex() == 1:
                         self.update_data_display(data)
                     elif self.tabs.currentIndex() == 2:
@@ -420,43 +421,20 @@ class MainWindow(QMainWindow):
         elif self.test_mode:
             self.system_info_text_edit.setPlainText("Test Modunda Çalışıyor")
 
-    def save_data(self):
+    def save_data(self, data):
+        current_time = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        data_entry = {"time": current_time, "data": data}
+        self.data_log.append(data_entry)
+
+    def save_as_data(self):
+        options = QFileDialog.Options()
+        file_path, _ = QFileDialog.getSaveFileName(self, "Veri Dosyasını Seç", "", "JSON Files (*.json);;All Files (*)", options=options)
+        
         try:
-            # Dosya kaydetme yeri seçimi için dosya diyalogu açıyoruz
-            options = QFileDialog.Options()
-            file_path, _ = QFileDialog.getSaveFileName(self, "Verileri Kaydet", "", "Metin Dosyaları (*.txt)", options=options)
-            
-            if file_path:  # Eğer dosya yolu seçilmişse
-                current_time = datetime.now().strftime("%H:%M:%S - %d/%m/%Y")
-                all_data = []
-
-                for i in range(len(self.time_data)):
-                    data = {
-                        'name': self.data_entries['name'].text(),
-                        'packageNumber': self.data_entries['packageNumber'].text(),
-                        'latitude': self.data_entries['latitude'].text(),
-                        'longitude': self.data_entries['longitude'].text(),
-                        'speed': self.data_entries['speed'].text(),
-                        'pressure': self.data_entries['pressure'].text(),
-                        'altitude': self.data_entries['altitude'].text(),
-                        'temperature': self.data_entries['temperature'].text(),
-                        'pitch': self.data_entries['pitch'].text(),
-                        'roll': self.data_entries['roll'].text(),
-                        'yaw': self.data_entries['yaw'].text(),
-                        'pyroTrigger': self.data_entries['pyroTrigger'].text(),
-                        'flightStatus': self.data_entries['flightStatus'].text()
-                    }
-
-                    formatted_data = f"{current_time} > {data}"
-                    all_data.append(formatted_data)
-
-                with open(file_path, "a") as f:
-                    for entry in all_data:
-                        f.write(entry + "\n")
-
-                self.show_message("Başarılı", "Veriler başarıyla kaydedildi.")
-        except Exception as e:
-            self.show_message("Kaydetme Hatası", str(e))
+            with open(file_path, "w") as file:
+                json.dump(self.data_log, file, indent=4)
+        except:
+            pass
 
     def show_message(self, title, message,):
         msg_box = QMessageBox()
