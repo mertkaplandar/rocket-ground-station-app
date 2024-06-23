@@ -13,6 +13,7 @@ You can view this text in Turkish by clicking [here](README_TR.md).
 - Real-time charts for altitude, pressure, and speed data monitoring
 - Test mode to display sample data
 - Data recording and export
+- Examining previously recorded data in detail on graphs with the graph-viewer.py tool
 
 ## Requirements
 

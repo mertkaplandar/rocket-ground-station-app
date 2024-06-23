@@ -11,6 +11,7 @@ Bu proje, Atmaca Roket Takımı'nın yer istasyonu verilerini izlemek için geli
 - Gerçek zamanlı grafikler ile irtifa, basınç ve hız verilerinin izlenmesi
 - Test modu ile örnek verilerin görüntülenmesi
 - Veri kayıt ve dışa aktarma
+- graph-viewer.py aracı ile daha önce kaydedilmiş verileri detaylı olarak grafikler üzerinde inceleme
 
 ## Gereksinimler
 
