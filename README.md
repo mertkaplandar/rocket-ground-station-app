@@ -19,7 +19,6 @@ You can view this text in Turkish by clicking [here](README_TR.md).
 
 The following Python libraries are required to run this project:
 
-- Python 3
 - PyQt5
 - pyserial
 - folium
