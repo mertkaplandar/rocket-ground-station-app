@@ -63,4 +63,4 @@ The following Python libraries are required to run this project:
 
 ## Contact
 
-For any questions or suggestions, please contact [Mert Kaplandar](https://github.com/mertkaplandar).
+For any questions or suggestions, please contact with [Mert Kaplandar](https://github.com/mertkaplandar).
