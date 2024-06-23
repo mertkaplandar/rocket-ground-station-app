@@ -1,11 +1,99 @@
 <!DOCTYPE html>
+<html lang="en">
 <head>
-    <meta charset="utf-8">
+    <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Atmaca Roket Takımı</title>
+    <title>Atmaca Rocket Team - Ground Station Data Monitoring Tool</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            padding: 20px;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        h1, h2, h3, h4, h5, h6 {
+            color: #333;
+        }
+        a {
+            color: #0366d6;
+            text-decoration: none;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+        img {
+            max-width: 100%;
+            height: auto;
+        }
+        pre {
+            background-color: #f6f8fa;
+            padding: 10px;
+            border-radius: 5px;
+        }
+    </style>
 </head>
 <body>
-    <h1>Atmaca Roket Takımı - Yer İstasyonu Programı</h1>
-    <h3>Designed by. Mert Kaplandar</h3>
+    <h1>Atmaca Rocket Team - Ground Station Data Monitoring Tool</h1>
+    <p><img src="logo.png" alt="Logo"></p>
+    <p>This project is a tool developed to monitor the ground station data of the Atmaca Rocket Team. The application uses PyQt5 and other Python libraries to read, visualize, and save real-time data streaming through the serial port.</p>
+    <p>You can view this text in Turkish by clicking <a href="README_TR.md">here</a>.</p>
+    <h2>Features</h2>
+    <ul>
+        <li>Data acquisition and display via serial port</li>
+        <li>Real-time location display on the map</li>
+        <li>Real-time charts for altitude, pressure, and speed data monitoring</li>
+        <li>Test mode to display sample data</li>
+        <li>Data recording and export</li>
+    </ul>
+    <h2>Requirements</h2>
+    <p>The following Python libraries are required to run this project:</p>
+    <ul>
+        <li>Python 3</li>
+        <li>PyQt5</li>
+        <li>pyserial</li>
+        <li>folium</li>
+        <li>matplotlib</li>
+        <li>PyQtWebEngine</li>
+    </ul>
+    <h2>Installation</h2>
+    <ol>
+        <li>
+            <strong>Clone the Repository:</strong>
+            <pre><code>git clone https://github.com/mertkaplandar/rocket-ground-station-app.git
+cd rocket-ground-station-app</code></pre>
+        </li>
+        <li>
+            <strong>Install Required Libraries:</strong>
+            <pre><code>pip install -r requirements.txt</code></pre>
+        </li>
+        <li>
+            <strong>Run the Application:</strong>
+            <pre><code>python app.py</code></pre>
+        </li>
+    </ol>
+    <h2>Usage</h2>
+    <ol>
+        <li><strong>Select Port and Baud Rate:</strong>
+            <ul>
+                <li>When you start the application, select the available ports and baud rate.</li>
+                <li>Click the "Connect" button.</li>
+            </ul>
+        </li>
+        <li><strong>Data Monitoring:</strong>
+            <ul>
+                <li>Once data streaming starts, you can see real-time data in the "Data" tab.</li>
+                <li>In the "Charts" tab, you can examine altitude, pressure, and speed charts.</li>
+                <li>In the "Map" tab, you can track your location on the map.</li>
+            </ul>
+        </li>
+        <li><strong>Test Mode:</strong>
+            <ul>
+                <li>Click the "Test Mode" button to run the application with test data.</li>
+            </ul>
+        </li>
+    </ol>
+    <h2>Contact</h2>
+    <p>For any questions or suggestions, please contact <a href="https://github.com/mertkaplandar">Mert Kaplandar</a>.</p>
 </body>
 </html>
