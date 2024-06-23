@@ -13,7 +13,7 @@ from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
 class MainWindow(QMainWindow):
     def __init__(self):
         super().__init__()
-        self.setWindowTitle("Veri Görselleştirme Uygulaması")
+        self.setWindowTitle("Atmaca Roket Takımı - Veri Görüntüleme Aracı")
         self.resize(1200, 800)
 
         with open("config.json", "r") as file:
