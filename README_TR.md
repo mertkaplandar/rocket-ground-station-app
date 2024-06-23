@@ -17,8 +17,6 @@ Bu proje, Atmaca Roket Takımı'nın yer istasyonu verilerini izlemek için geli
 
 Bu projeyi çalıştırmak için aşağıdaki Python kütüphanelerine ihtiyaç vardır:
 
-- Python 3
-
 - PyQt5
 - pyserial
 - folium
