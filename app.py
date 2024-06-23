@@ -320,7 +320,7 @@ class MainWindow(QMainWindow):
         self.refresh_system_info()
 
         self.update_map(self.test_data['latitude'], self.test_data['longitude'])
-        self.update_graphs()
+        self.update_graphs(self.test_data)
         self.update_data_display(self.test_data)
 
     def refresh_ports(self):
