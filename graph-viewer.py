@@ -57,9 +57,29 @@ class MainWindow(QMainWindow):
             try:
                 with open(file_path, 'r') as file:
                     self.data = json.load(file)
-                self.create_tabs_for_data()
+                if self.check_data(self.data):
+                    self.create_tabs_for_data()
+                else:
+                    self.show_message("Hata", "Yüklenen kayıt dosyası bozuk ya da içeriği doğru değil.")
             except Exception as e:
                 self.show_message("Hata", f"Veri dosyası yüklenirken hata oluştu: {str(e)}")
+
+    def check_data(self, json_data):
+        if isinstance(json_data, list):
+            for item in json_data:
+                if 'data' in item:
+                    data = item['data']
+                    required_fields = ['name', 'packageNumber', 'latitude', 'longitude', 'speed',
+                                    'pressure', 'altitude', 'temperature', 'pitch', 'roll', 'yaw',
+                                    'pyroTrigger', 'flightStatus']
+                    for field in required_fields:
+                        if field not in data:
+                            return False
+                else:
+                    return False
+            return True
+        else:
+            return False
 
     def create_tabs_for_data(self):
         data_keys = self.data[0]['data'].keys()
