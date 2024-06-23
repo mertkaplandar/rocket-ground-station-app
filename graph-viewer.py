@@ -36,7 +36,7 @@ class MainWindow(QMainWindow):
         self.web_view = QWebEngineView()
         
         # Yerel HTML dosyasının yolu
-        local_html_path = os.path.join(os.path.dirname(__file__), 'index.html')
+        local_html_path = os.path.join(os.path.dirname(__file__), 'resources/entry.html')
         self.web_view.setUrl(QUrl.fromLocalFile(local_html_path))
         
         self.entry_layout.addWidget(self.web_view)

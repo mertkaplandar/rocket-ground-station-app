@@ -5,7 +5,7 @@ from PyQt5.QtWidgets import (
     QLabel, QComboBox, QTabWidget, QTextEdit, QLineEdit, QFormLayout,
     QMessageBox, QCheckBox, QFileDialog
 )
-from PyQt5.QtCore import QTimer, Qt
+from PyQt5.QtCore import QTimer, Qt, QUrl
 import serial
 import serial.serialutil
 import serial.tools.list_ports
@@ -14,6 +14,7 @@ import folium
 from PyQt5.QtGui import QPixmap, QIcon
 import webbrowser
 import io
+import os
 import matplotlib.pyplot as plt
 from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
 from matplotlib.backends.backend_qt5agg import NavigationToolbar2QT as NavigationToolbar
@@ -147,9 +148,9 @@ class MainWindow(QMainWindow):
         self.entry_tab.setLayout(self.entry_layout)
 
         self.tabs.addTab(self.entry_tab, "Giriş")
-        with open("resources/entry.html", "r", encoding="utf-8") as entry_file:
-            entry_html = entry_file.read()
-            self.entry_view.setHtml(entry_html)
+
+        local_html_path = os.path.join(os.path.dirname(__file__), 'resources/entry.html')
+        self.entry_view.setUrl(QUrl.fromLocalFile(local_html_path))
 
         # Veriler Sekmesi
         self.data_tab = QWidget()
