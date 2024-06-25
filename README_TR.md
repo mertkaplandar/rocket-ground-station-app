@@ -4,7 +4,9 @@
 
 Bu proje, Atmaca Roket Takımı'nın yer istasyonu verilerini izlemek için geliştirilmiş bir araçtır. Uygulama, PyQt5 ve diğer Python kütüphanelerini kullanarak, gerçek zamanlı veri akışını seri port üzerinden okuyup görselleştirir ve kaydeder.
 
-Bu programın çalışması alınan verileri json formatında yazan örnek Arduino koduna [buraya](https://github.com/mertkaplandar/rocket-ground-station-hardware-code) tıklayarak ulaşabilirsiniz.
+Bu programın çalışması alınan verileri json formatında yazan örnek Arduino koduna [buraya](https://github.com/mertkaplandar/rocket-ground-station-hardware-code) tıklayarak ulaşabilirsiniz. Programın doğru ve düzgün şekilde çalışması için Arduino kodunda değişiklik yapmayın. Veri paketinde kullanılmayan verileri boş bırakarak devam edin.
+
+You can view this text in English by clicking [here](README.md).
 
 ## Özellikler
 
