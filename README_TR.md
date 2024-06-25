@@ -19,8 +19,6 @@ Bu programın çalışması için kullanılması gereken örnek Arduino koduna [
 
 Bu projeyi çalıştırmak için aşağıdaki Python kütüphanelerine ihtiyaç vardır:
 
-- Python 3
-
 - PyQt5
 - pyserial
 - folium
