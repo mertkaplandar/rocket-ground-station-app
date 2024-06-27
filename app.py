@@ -14,6 +14,7 @@ import folium
 from PyQt5.QtGui import QPixmap, QIcon
 import webbrowser
 import io
+
 import os
 import matplotlib.pyplot as plt
 from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
@@ -365,7 +366,7 @@ class MainWindow(QMainWindow):
                     elif self.tabs.currentIndex() == 3:
                         if self.map_checkbox.isChecked():
                             self.update_data_display(data)
-                        self.check_map_data_changed()
+                            self.check_map_data_changed()
             except serial.SerialException as e:
                 self.show_message("Seri Port Hatası", str(e))
                 self.disconnect_serial()
