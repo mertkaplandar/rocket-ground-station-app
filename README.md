@@ -4,7 +4,7 @@
 
 This project is a tool developed to monitor the ground station data of the Atmaca Rocket Team. The application uses PyQt5 and other Python libraries to read, visualize, and save real-time data streaming through the serial port.
 
-You can access the sample Arduino code that writes the data received from this program in json format by clicking [here](https://github.com/mertkalandar/rocket-ground-station-hardware-code). Do not make any changes to the Arduino code for the program to work correctly and properly. Continue by leaving any unused data in the data package blank.
+You can access the sample Arduino code that writes the data received from this program in json format by clicking [here](https://github.com/mertkaplandar/rocket-ground-station-hardware-code). Do not make any changes to the Arduino code for the program to work correctly and properly. Continue by leaving any unused data in the data package blank.
 
 You can view this text in Turkish by clicking [here](README_TR.md).
 
