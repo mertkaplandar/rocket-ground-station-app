@@ -1,17 +1,13 @@
 import sys
 import json
-from PyQt5.QtWidgets import (
-    QApplication, QMainWindow, QWidget, QVBoxLayout, QPushButton,
-    QLabel, QComboBox, QTabWidget, QTextEdit, QLineEdit, QFormLayout,
-    QMessageBox, QCheckBox, QFileDialog
-)
+from PyQt5.QtWidgets import *
 from PyQt5.QtCore import QTimer, Qt, QUrl
 import serial
 import serial.serialutil
 import serial.tools.list_ports
 from PyQt5.QtWebEngineWidgets import QWebEngineView, QWebEngineSettings
 import folium
-from PyQt5.QtGui import QPixmap, QIcon
+from PyQt5.QtGui import QPixmap, QIcon, QTransform
 import webbrowser
 import io
 
@@ -53,11 +49,11 @@ class MainWindow(QMainWindow):
             'longitude': 28.979530,
             'speed': 2,
             'pressure': '1013 hPa',
-            'altitude': '25000 m',
+            'altitude': '2500 m',
             'temperature': '20°C',
-            'pitch': '5°',
-            'roll': '10°',
-            'yaw': '15°',
+            'pitch': '5',
+            'roll': '20',
+            'yaw': '15',
             'pyroTrigger': 'No',
             'flightStatus': 'Ascending'
         }
@@ -128,6 +124,7 @@ class MainWindow(QMainWindow):
         self.port_selection_layout.addWidget(self.refresh_button)
         self.port_selection_layout.addWidget(self.connect_button)
         self.port_selection_layout.addStretch(1)
+        
         if self.show_test_mode == True:
             self.port_selection_layout.addWidget(self.test_mode_button)
 
@@ -153,31 +150,71 @@ class MainWindow(QMainWindow):
         local_html_path = os.path.join(os.path.dirname(__file__), 'resources/entry.html')
         self.entry_view.setUrl(QUrl.fromLocalFile(local_html_path))
 
+
         # Veriler Sekmesi
         self.data_tab = QWidget()
-        self.data_layout = QVBoxLayout()
-
-        self.data_entries_layout = QFormLayout()
-
-        self.data_entries_layout.addRow("Name:", self.data_entries['name'])
-        self.data_entries_layout.addRow("Package Number:", self.data_entries['packageNumber'])
-        self.data_entries_layout.addRow("Latitude:", self.data_entries['latitude'])
-        self.data_entries_layout.addRow("Longitude:", self.data_entries['longitude'])
-        self.data_entries_layout.addRow("Speed:", self.data_entries['speed'])
-        self.data_entries_layout.addRow("Pressure:", self.data_entries['pressure'])
-        self.data_entries_layout.addRow("Altitude:", self.data_entries['altitude'])
-        self.data_entries_layout.addRow("Temperature:", self.data_entries['temperature'])
-        self.data_entries_layout.addRow("Pitch:", self.data_entries['pitch'])
-        self.data_entries_layout.addRow("Roll:", self.data_entries['roll'])
-        self.data_entries_layout.addRow("Yaw:", self.data_entries['yaw'])
-        self.data_entries_layout.addRow("Pyro Trigger:", self.data_entries['pyroTrigger'])
-        self.data_entries_layout.addRow("Flight Status:", self.data_entries['flightStatus'])
-
-        self.data_layout.addLayout(self.data_entries_layout)  # Layout eklendi
-        self.data_layout.addStretch(1)  # Boşluk eklenerek alt kısmı genişletildi
-        
-        self.data_tab.setLayout(self.data_layout)
         self.tabs.addTab(self.data_tab, "Veriler")
+        
+        # Entry layout in the first tab
+        self.data_layout = QGridLayout()
+        self.data_tab.setLayout(self.data_layout)
+
+        # Name and Package Number Entries
+        self.data_layout.addWidget(QLabel('Name:'), 0, 0)
+        self.name_entry = QLineEdit(self)
+        self.data_layout.addWidget(self.name_entry, 0, 1)
+        
+        self.data_layout.addWidget(QLabel('Package Number:'), 1, 0)
+        self.package_number_entry = QLineEdit(self)
+        self.data_layout.addWidget(self.package_number_entry, 1, 1)
+
+        # Image Placeholder
+        self.rotate_rocket_image_label = QLabel(self)
+        self.rotate_rocket_image = QPixmap("resources/rocket.png")
+        self.rotate_rocket_image = self.rotate_rocket_image.scaledToHeight(320)
+        self.rotate_rocket_image_label.setPixmap(self.rotate_rocket_image)  # Change to the path of your image
+        
+        self.data_layout.addWidget(self.rotate_rocket_image_label, 2, 1)
+
+        # Pitch, Roll, Yaw Entries
+        self.data_layout.addWidget(QLabel('Pitch:'), 3, 0)
+        self.pitch_entry = QLineEdit(self)
+        self.data_layout.addWidget(self.pitch_entry, 3, 1)
+        
+        self.data_layout.addWidget(QLabel('Roll:'), 4, 0)
+        self.roll_entry = QLineEdit(self)
+        self.data_layout.addWidget(self.roll_entry, 4, 1)
+        
+        self.data_layout.addWidget(QLabel('Yaw:'), 5, 0)
+        self.yaw_entry = QLineEdit(self)
+        self.data_layout.addWidget(self.yaw_entry, 5, 1)
+
+        # Right-side Entries
+        right_layout = QVBoxLayout()
+        self.data_layout.addLayout(right_layout, 0, 3, 6, 1)
+        
+        right_layout.addWidget(QLabel('Altitude:'))
+        self.altitude_entry = QLineEdit(self)
+        right_layout.addWidget(self.altitude_entry)
+        
+        right_layout.addWidget(QLabel('Speed:'))
+        self.speed_entry = QLineEdit(self)
+        right_layout.addWidget(self.speed_entry)
+        
+        right_layout.addWidget(QLabel('Pyro Trigger:'))
+        self.pyro_trigger_entry = QLineEdit(self)
+        right_layout.addWidget(self.pyro_trigger_entry)
+        
+        right_layout.addItem(QSpacerItem(0, 20, QSizePolicy.Minimum, QSizePolicy.Expanding))
+
+        right_layout.addWidget(QLabel('Latitude:'))
+        self.latitude_entry = QLineEdit(self)
+        right_layout.addWidget(self.latitude_entry)
+        
+        right_layout.addWidget(QLabel('Longitude:'))
+        self.longitude_entry = QLineEdit(self)
+        right_layout.addWidget(self.longitude_entry)
+
 
         # Grafik Sekmesi
         self.graph_tab = QWidget()
@@ -384,19 +421,22 @@ class MainWindow(QMainWindow):
         self.window_widget_creator()
 
     def update_data_display(self, data):
-        self.data_entries['name'].setText(data['name'])
-        self.data_entries['packageNumber'].setText(str(data['packageNumber']))
-        self.data_entries['latitude'].setText(str(data['latitude']))
-        self.data_entries['longitude'].setText(str(data['longitude']))
-        self.data_entries['speed'].setText(str(data['speed']))
-        self.data_entries['pressure'].setText(str(data['pressure']))
-        self.data_entries['altitude'].setText(str(data['altitude']))
-        self.data_entries['temperature'].setText(str(data['temperature']))
-        self.data_entries['pitch'].setText(str(data['pitch']))
-        self.data_entries['roll'].setText(str(data['roll']))
-        self.data_entries['yaw'].setText(str(data['yaw']))
-        self.data_entries['pyroTrigger'].setText(str(data['pyroTrigger']))
-        self.data_entries['flightStatus'].setText(str(data['flightStatus']))
+        self.name_entry.setText(data['name'])
+        self.package_number_entry.setText(str(data['packageNumber']))
+        self.latitude_entry.setText(str(data['latitude']))
+        self.longitude_entry.setText(str(data['longitude']))
+        self.speed_entry.setText(str(data['speed']))
+        # self.pressure_entries.setText(str(data['pressure']))
+        self.altitude_entry.setText(str(data['altitude']))
+        # self.temperature_entries.setText(str(data['temperature']))
+        self.pitch_entry.setText(str(data['pitch']))
+        self.roll_entry.setText(str(data['roll']))
+        self.yaw_entry.setText(str(data['yaw']))
+        self.pyro_trigger_entry.setText(str(data['pyroTrigger']))
+        # self.flight_status_entry.setText(str(data['flightStatus']))
+
+        self.rotate_rocket_image = self.rotate_rocket_image.transformed(QTransform().rotate(int(self.roll_entry.text())))
+        self.rotate_rocket_image_label = self.rotate_rocket_image_label.setPixmap(self.rotate_rocket_image)
 
     def check_map_data_changed(self):
         latitude = self.data_entries['latitude'].text()
