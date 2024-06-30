@@ -155,11 +155,9 @@ class MainWindow(QMainWindow):
         self.data_tab = QWidget()
         self.tabs.addTab(self.data_tab, "Veriler")
         
-        # Entry layout in the first tab
         self.data_layout = QGridLayout()
         self.data_tab.setLayout(self.data_layout)
 
-        # Name and Package Number Entries
         self.data_layout.addWidget(QLabel('Name:'), 0, 0)
         self.name_entry = QLineEdit(self)
         self.data_layout.addWidget(self.name_entry, 0, 1)
@@ -168,15 +166,13 @@ class MainWindow(QMainWindow):
         self.package_number_entry = QLineEdit(self)
         self.data_layout.addWidget(self.package_number_entry, 1, 1)
 
-        # Image Placeholder
+        # Rocket image
         self.rotate_rocket_image_label = QLabel(self)
         self.rotate_rocket_image = QPixmap("resources/rocket.png")
         self.rotate_rocket_image = self.rotate_rocket_image.scaledToHeight(320)
-        self.rotate_rocket_image_label.setPixmap(self.rotate_rocket_image)  # Change to the path of your image
-        
+        self.rotate_rocket_image_label.setPixmap(self.rotate_rocket_image)
         self.data_layout.addWidget(self.rotate_rocket_image_label, 2, 1)
 
-        # Pitch, Roll, Yaw Entries
         self.data_layout.addWidget(QLabel('Pitch:'), 3, 0)
         self.pitch_entry = QLineEdit(self)
         self.data_layout.addWidget(self.pitch_entry, 3, 1)
@@ -189,31 +185,76 @@ class MainWindow(QMainWindow):
         self.yaw_entry = QLineEdit(self)
         self.data_layout.addWidget(self.yaw_entry, 5, 1)
 
-        # Right-side Entries
+        # Right-side layout
         right_layout = QVBoxLayout()
         self.data_layout.addLayout(right_layout, 0, 3, 6, 1)
-        
-        right_layout.addWidget(QLabel('Altitude:'))
+
+        # Altitude, Speed, Pyro Trigger
+        altitude_layout = QHBoxLayout()
+        altitude_layout.addWidget(QLabel('Altitude:'))
         self.altitude_entry = QLineEdit(self)
-        right_layout.addWidget(self.altitude_entry)
-        
-        right_layout.addWidget(QLabel('Speed:'))
+        self.altitude_entry.setFixedWidth(300) 
+        altitude_layout.addWidget(self.altitude_entry)
+        right_layout.addLayout(altitude_layout)
+
+        speed_layout = QHBoxLayout()
+        speed_layout.addWidget(QLabel('Speed:'))
         self.speed_entry = QLineEdit(self)
-        right_layout.addWidget(self.speed_entry)
-        
-        right_layout.addWidget(QLabel('Pyro Trigger:'))
+        self.speed_entry.setFixedWidth(300) 
+        speed_layout.addWidget(self.speed_entry)
+        right_layout.addLayout(speed_layout)
+
+        pyro_trigger_layout = QHBoxLayout()
+        pyro_trigger_layout.addWidget(QLabel('Pyro Trigger:'))
         self.pyro_trigger_entry = QLineEdit(self)
-        right_layout.addWidget(self.pyro_trigger_entry)
-        
+        self.pyro_trigger_entry.setFixedWidth(300) 
+        pyro_trigger_layout.addWidget(self.pyro_trigger_entry)
+        right_layout.addLayout(pyro_trigger_layout)
+
+        # Spacer
         right_layout.addItem(QSpacerItem(0, 20, QSizePolicy.Minimum, QSizePolicy.Expanding))
 
-        right_layout.addWidget(QLabel('Latitude:'))
+        # Latitude, Longitude
+        latitude_layout = QHBoxLayout()
+        latitude_layout.addWidget(QLabel('Latitude:'))
         self.latitude_entry = QLineEdit(self)
-        right_layout.addWidget(self.latitude_entry)
-        
-        right_layout.addWidget(QLabel('Longitude:'))
+        self.latitude_entry.setFixedWidth(300) 
+        latitude_layout.addWidget(self.latitude_entry)
+        right_layout.addLayout(latitude_layout)
+
+        longitude_layout = QHBoxLayout()
+        longitude_layout.addWidget(QLabel('Longitude:'))
         self.longitude_entry = QLineEdit(self)
-        right_layout.addWidget(self.longitude_entry)
+        self.longitude_entry.setFixedWidth(300)  
+        longitude_layout.addWidget(self.longitude_entry)
+        right_layout.addLayout(longitude_layout)
+
+        # Spacer
+        right_layout.addItem(QSpacerItem(0, 20, QSizePolicy.Minimum, QSizePolicy.Expanding))
+
+        # Pressure, Temperature
+        pressure_layout = QHBoxLayout()
+        pressure_layout.addWidget(QLabel('Pressure:'))
+        self.pressure_entry = QLineEdit(self)
+        self.pressure_entry.setFixedWidth(300) 
+        pressure_layout.addWidget(self.pressure_entry)
+        right_layout.addLayout(pressure_layout)
+
+        temperature_layout = QHBoxLayout()
+        temperature_layout.addWidget(QLabel('Temperature:'))
+        self.temperature_entry = QLineEdit(self)
+        self.temperature_entry.setFixedWidth(300)  
+        temperature_layout.addWidget(self.temperature_entry)
+        right_layout.addLayout(temperature_layout)
+
+        # Separator line
+        separator_line = QFrame()
+        separator_line.setFrameShape(QFrame.VLine)
+        separator_line.setFrameShadow(QFrame.Sunken)
+        self.data_layout.addWidget(separator_line, 0, 2, 6, 1)
+
+        self.layout = QVBoxLayout(self)
+        self.layout.addWidget(self.tabs)
 
 
         # Grafik Sekmesi
@@ -426,9 +467,9 @@ class MainWindow(QMainWindow):
         self.latitude_entry.setText(str(data['latitude']))
         self.longitude_entry.setText(str(data['longitude']))
         self.speed_entry.setText(str(data['speed']))
-        # self.pressure_entries.setText(str(data['pressure']))
+        self.pressure_entry.setText(str(data['pressure']))
         self.altitude_entry.setText(str(data['altitude']))
-        # self.temperature_entries.setText(str(data['temperature']))
+        self.temperature_entry.setText(str(data['temperature']))
         self.pitch_entry.setText(str(data['pitch']))
         self.roll_entry.setText(str(data['roll']))
         self.yaw_entry.setText(str(data['yaw']))
